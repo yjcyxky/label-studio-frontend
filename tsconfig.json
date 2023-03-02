@@ -8,8 +8,9 @@
     "strict": true,
     "rootDirs": ["./src"],
     "typeRoots": ["./types", "./node_modules/@types"],
+    "types": ["cypress", "./cypress/support"],
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
