@@ -5,7 +5,7 @@ import './AnnotationsCarousel.styl';
 import { AnnotationButton } from './AnnotationButton';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react';
-import { clamp } from '../../utils/utilities';
+import { clamp, isCurrentUser } from '../../utils/utilities';
 
 interface AnnotationsCarouselInterface {
   store: any;
@@ -20,6 +20,9 @@ export const AnnotationsCarousel = observer(({ store, annotationStore }: Annotat
   const enableCreateAnnotation = store.hasInterface('annotations:add-new');
   const groundTruthEnabled = store.hasInterface('ground-truth');
   const enableAnnotationDelete = store.hasInterface('annotations:delete');
+  const currentUser = store.user;
+  const username = currentUser?.firstName || 'Admin';
+  const email = currentUser?.email || '';
   const carouselRef = useRef<HTMLElement>();
   const containerRef = useRef<HTMLElement>();
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -47,6 +50,15 @@ export const AnnotationsCarousel = observer(({ store, annotationStore }: Annotat
     if (enablePredictions) newEntities.push(...annotationStore.predictions);
   
     if (enableAnnotations) newEntities.push(...annotationStore.annotations);
+
+    // console.log('newEntities', newEntities, email, username, store.user);
+    // // filter out entities that don't belong to the current user and hide them
+    // const filteredEntities = newEntities.filter((entity) => {
+    //   const { user } = entity;
+    //   const isCurrentUser = user?.email === email || user?.firstName === username;
+    //   return isCurrentUser
+    // });
+
     setEntities(newEntities);
   }, [annotationStore, JSON.stringify(annotationStore.predictions), JSON.stringify(annotationStore.annotations)]);
   
@@ -62,8 +74,8 @@ export const AnnotationsCarousel = observer(({ store, annotationStore }: Annotat
                 enablePredictions,
                 enableCreateAnnotation,
                 groundTruthEnabled,
-                enableAnnotations,
-                enableAnnotationDelete,
+                enableAnnotations: isCurrentUser(store) && enableAnnotations,
+                enableAnnotationDelete: isCurrentUser(store) && enableAnnotationDelete,
               }}
               annotationStore={annotationStore}
             />

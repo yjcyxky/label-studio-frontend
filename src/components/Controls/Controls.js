@@ -7,6 +7,7 @@ import { DraftPanel } from '../Annotations/Annotations';
 import styles from './Controls.module.scss';
 import { Button } from '../../common/Button/Button';
 import { Tooltip } from '../../common/Tooltip/Tooltip';
+import { isCurrentUser } from '../../utils/utilities';
 
 const TOOLTIP_DELAY = 0.8;
 
@@ -67,7 +68,7 @@ export default inject('store')(
         submitButton = (
           <Tooltip title="Save results: [ Ctrl+Enter ]" mouseEnterDelay={TOOLTIP_DELAY}>
             <Button
-              disabled={disabled}
+              disabled={!isCurrentUser(store) || disabled}
               look="primary"
               icon={<CheckOutlined />}
               onClick={store.submitAnnotation}
@@ -83,7 +84,7 @@ export default inject('store')(
         updateButton = (
           <Tooltip title="Update this task: [ Alt+Enter ]" mouseEnterDelay={TOOLTIP_DELAY}>
             <Button
-              disabled={disabled}
+              disabled={!isCurrentUser(store) || disabled}
               look="primary"
               icon={<CheckCircleOutlined />}
               onClick={store.updateAnnotation}

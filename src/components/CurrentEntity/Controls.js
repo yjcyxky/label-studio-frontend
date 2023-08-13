@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import { Button } from '../../common/Button/Button';
 import { Block, Elem } from '../../utils/bem';
-import { isDefined } from '../../utils/utilities';
+import { isDefined, isCurrentUser } from '../../utils/utilities';
 import { IconBan } from '../../assets/icons';
 
 import './Controls.styl';
@@ -80,7 +80,7 @@ export const Controls = controlsInjector(observer(({ store, history, annotation 
       buttons.push(
         <ButtonTooltip key="submit" name="annotation:submit" title={title}>
           <Elem name="tooltip-wrapper">
-            <Button disabled={disabled || submitDisabled} look="primary" onClick={store.submitAnnotation}>
+            <Button disabled={!isCurrentUser(store) || disabled || submitDisabled} look="primary" onClick={store.submitAnnotation}>
               Submit
             </Button>
           </Elem>
@@ -91,7 +91,7 @@ export const Controls = controlsInjector(observer(({ store, history, annotation 
     if ((userGenerate && sentUserGenerate) || (!userGenerate && store.hasInterface('update'))) {
       buttons.push(
         <ButtonTooltip key="update" name="annotation:submit" title="Update this task">
-          <Button disabled={disabled || submitDisabled} look="primary" onClick={store.updateAnnotation}>
+          <Button disabled={!isCurrentUser(store) || disabled || submitDisabled} look="primary" onClick={store.updateAnnotation}>
             {sentUserGenerate || versions.result ? 'Update' : 'Submit'}
           </Button>
         </ButtonTooltip>,

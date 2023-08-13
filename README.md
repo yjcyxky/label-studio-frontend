@@ -119,6 +119,12 @@ import 'label-studio/build/static/css/main.css';
    ```
    Now you have one .js file and one .css file in the `build/static/` directory
 
+   ```
+   cp build/main.css build/main.css.map ../label-studio/label_studio/frontend/dist/lsf/css
+   cp build/*.js build/*.js.map ../label-studio/label_studio/frontend/dist/lsf/js
+   cp build/decode-audio.wasm ../label-studio/label_studio/frontend/dist/lsf/js
+   ```
+
 ## Label Studio for Teams, Startups, and Enterprises :office:
 
 Label Studio for Teams is our enterprise edition (cloud & on-prem), that includes a data manager, high-quality baseline models, active learning, collaborators support, and more. Please visit the [website](https://www.heartex.com/) to learn more.

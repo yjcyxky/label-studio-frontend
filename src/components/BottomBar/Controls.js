@@ -2,7 +2,7 @@ import { inject, observer } from 'mobx-react';
 import { Button } from '../../common/Button/Button';
 import { Tooltip } from '../../common/Tooltip/Tooltip';
 import { Block, Elem } from '../../utils/bem';
-import { isDefined } from '../../utils/utilities';
+import { isDefined, isCurrentUser } from '../../utils/utilities';
 import { IconBan } from '../../assets/icons';
 
 import './Controls.styl';
@@ -160,7 +160,7 @@ export const Controls = controlsInjector(observer(({ store, history, annotation 
       const isUpdate = sentUserGenerate || versions.result;
       const button = (
         <ButtonTooltip key="update" title="Update this task: [ Alt+Enter ]">
-          <Button aria-label="submit" disabled={disabled || submitDisabled} look="primary" onClick={async () => {
+          <Button aria-label="submit" disabled={!isCurrentUser(store) || disabled || submitDisabled} look="primary" onClick={async () => {
             await store.commentStore.commentFormSubmit();
             store.updateAnnotation();
           }}>

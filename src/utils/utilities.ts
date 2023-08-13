@@ -2,6 +2,14 @@ import { formatDistanceToNow } from 'date-fns';
 import { destroy, detach } from 'mobx-state-tree';
 import { toCamelCase } from 'strman';
 
+export const isCurrentUser = (store: any) => {
+  const currentUser = store.user;
+  const user = store.annotationStore.selected && store.annotationStore.selected.user;
+  console.log('isCurrentUser: ', store, currentUser, user);
+  // TODO: 1 is a magic number, but it maybe not be a good idea. How to handle this?
+  return user?.id === currentUser.id || currentUser.isSuperuser || currentUser.id === 1;
+}
+
 /**
  * Internal helper to check if parameter is a string
  * @param {*} value
