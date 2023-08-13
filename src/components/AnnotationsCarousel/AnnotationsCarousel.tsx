@@ -5,7 +5,7 @@ import './AnnotationsCarousel.styl';
 import { AnnotationButton } from './AnnotationButton';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react';
-import { clamp, isCurrentUser } from '../../utils/utilities';
+import { clamp } from '../../utils/utilities';
 
 interface AnnotationsCarouselInterface {
   store: any;
@@ -28,6 +28,11 @@ export const AnnotationsCarousel = observer(({ store, annotationStore }: Annotat
   const [currentPosition, setCurrentPosition] = useState(0);
   const [isLeftDisabled, setIsLeftDisabled] = useState(false);
   const [isRightDisabled, setIsRightDisabled] = useState(false);
+
+  const isCurrentUser = (entity: any) => {
+    const { user } = entity;
+    return user?.email === email || user?.firstName === username || currentUser.isSuperuser || currentUser.id === 1;
+  }
 
   const updatePosition = useCallback((e: MouseEvent, goLeft = true) => {
     if (containerRef.current && carouselRef.current) {
@@ -74,8 +79,8 @@ export const AnnotationsCarousel = observer(({ store, annotationStore }: Annotat
                 enablePredictions,
                 enableCreateAnnotation,
                 groundTruthEnabled,
-                enableAnnotations: isCurrentUser(store) && enableAnnotations,
-                enableAnnotationDelete: isCurrentUser(store) && enableAnnotationDelete,
+                enableAnnotations: isCurrentUser(entity) && enableAnnotations,
+                enableAnnotationDelete: isCurrentUser(entity) && enableAnnotationDelete,
               }}
               annotationStore={annotationStore}
             />
